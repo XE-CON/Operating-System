@@ -29,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox mCbRemberPs;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +36,13 @@ public class LoginActivity extends AppCompatActivity {
         //控制登录用户名图标大小
         mEtUsername = findViewById(R.id.et_username);
         Drawable drawable = getResources().getDrawable(R.drawable.username);
-        drawable.setBounds(0, 0, 80, 80);//第一个 0 是距左边距离，第二个 0 是距上边距离，40 分别是长宽
+        drawable.setBounds(0, 0, 60, 60);//第一个 0 是距左边距离，第二个 0 是距上边距离，40 分别是长宽
         mEtUsername.setCompoundDrawables(drawable, null, null, null);//只放左边
 
         //控制密码图标大小
         mEtPassword = findViewById(R.id.et_password);
         Drawable drawable1 = getResources().getDrawable(R.drawable.password);
-        drawable1.setBounds(0, 0, 80, 80);//第一个 0 是距左边距离，第二个 0 是距上边距离，40 分别是长宽
+        drawable1.setBounds(0, 0, 60, 60);//第一个 0 是距左边距离，第二个 0 是距上边距离，40 分别是长宽
         mEtPassword.setCompoundDrawables(drawable1, null, null, null);//只放左边
 
         mBtnLogin = findViewById(R.id.btn_login);
@@ -56,14 +55,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //获取用户名和密码
-                String username =mEtUsername.getText().toString().trim();
+                String username = mEtUsername.getText().toString().trim();
                 String password = mEtPassword.getText().toString().trim();
                 if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
                     ToastUtil.showMsg(LoginActivity.this, "用户名和密码输入不能为空");
                 } else {
-                    if (false) {
+                    if ("abcd".equals(username)) {
                         //同后台校验之后密码错误弹出提示.这部分需要调用后台的接口
-                        ToastUtil.showMsg(LoginActivity.this, "密码错误");
+                        ToastUtil.showMsg(LoginActivity.this, "该培训证号不存在");
                     } else {
                         //通过检验 跳转到主界面
                         Intent intent = new Intent(LoginActivity.this, LoginSuccessActivity.class);
@@ -89,18 +88,39 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         //记住密码功能
-        //创建一个保存对象
-//        mSharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
-//        //编辑器
-//        mEditor=mSharedPreferences.edit();
-//        boolean isRemember = mSharedPreferences.getBoolean("true", false);
-//        if (true) {
-//            mEditor.putString("username", mEtUsername.getText().toString());
-//            mEditor.putString("Password", mEtPassword.getText().toString());
-//            mEtUsername.setText(mSharedPreferences.getString("username", ""));
-//            mEtPassword.setText(mSharedPreferences.getString("Password", ""));
-//            mCbRemberPs.setChecked(true);
-//        }
+        mSharedPreferences = getSharedPreferences("data111", MODE_PRIVATE);
+        mEditor = mSharedPreferences.edit();
+        mCbRemberPs = findViewById(R.id.cb_remmberps);
+        mCbRemberPs.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            //选中时保存
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    String username = mEtUsername.getText().toString().trim();
+                    String password = mEtPassword.getText().toString().trim();
+                    mEditor.putString("username", username);
+                    mEditor.putString("password", password);
+                    mEditor.putString("ischeck", "true");
+                    mEditor.apply();
+                } else {
+                    mEditor.putString("username", "");
+                    mEditor.putString("password", "");
+                    mEditor.putString("ischeck", "false");
+                }
+            }
+        });
+        //初始化的时候
+        if (mSharedPreferences.getString("ischeck", "").equals("true")) {
+            mEtUsername.setText(mSharedPreferences.getString("username", ""));
+            mEtPassword.setText(mSharedPreferences.getString("password", ""));
+            mCbRemberPs.setChecked(true);
+        }else {
+            mEtUsername.setText("");
+            mEtPassword.setText("");
+            mCbRemberPs.setChecked(false);
+
+        }
+
     }
 
 
