@@ -118,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                     RequsetInfo requsetInfo=new RequsetInfo();
                     LoginInfoVo loginInfoVo=new LoginInfoVo();
                     Head head=new Head();
+                    head.setService_type("LOGIN");
                     Body body=new Body();
                     loginInfoVo.setUsername(username);
                     loginInfoVo.setPassword(password);

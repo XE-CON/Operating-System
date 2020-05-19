@@ -2,6 +2,9 @@ package com.example.xc_nonapplication.util;
 
 import android.util.Log;
 
+import com.example.xc_nonapplication.response.Response;
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -127,13 +130,22 @@ public class OperateData {
                                 response.append(temp);
                                 Log.i("Main", response.toString());
                             }
-                            int type = jsonToint(response.toString());
+                            System.out.println(response);
+//                            int type = jsonToint(response.toString());
+                            //将返回的报文修改解析成对象 json字符串转对象
+                            Gson gson = new Gson();
+                            Response responseinfo = gson.fromJson(String.valueOf(response), Response.class);
+                            System.out.println(responseinfo);
+                            int type=1;
+                            if (!"0000".equals(responseinfo.getBody().getResultinfo().getBackStatus())) {
+                                type=0;
+                            }
                             //根据
                             switch (type)
                             {
-                                case 0:mh.sendEmptyMessage(1);
+                                case 1:mh.sendEmptyMessage(1);
                                     break;
-                                case 1:mh.sendEmptyMessage(2);
+                                case 0:mh.sendEmptyMessage(2);
                                     break;
                                 default:
                             }
