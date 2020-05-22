@@ -59,13 +59,13 @@
         android:paddingBottom="50dp">
 
         <EditText
-            android:id="@+id/et_username"
+            android:id="@+id/et_trainnumber"
             android:layout_width="400dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
             android:layout_marginTop="100dp"
             android:background="@drawable/bg_inputbox"
-            android:drawableLeft="@drawable/username"
+            android:drawableLeft="@drawable/trainnumber"
             android:drawablePadding="10dp"
             android:hint="请输入您的培训证号"
             android:maxLines="1"
@@ -73,6 +73,7 @@
             android:paddingRight="10dp"
             android:textColor="#FFAD33"
             android:textSize="25sp" />
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -97,16 +98,15 @@
 
             <CheckBox
                 android:id="@+id/cb_DisplayPassword"
-                android:layout_width="70dp"
-                android:layout_height="63dp"
+                android:layout_width="50dp"
+                android:layout_height="41dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="35dp"
-                android:layout_marginRight="433dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="431dp"
                 android:background="@drawable/selector_password"
                 android:button="@null"
                 android:checked="false" />
         </RelativeLayout>
-
 
         <LinearLayout
             android:layout_width="wrap_content"

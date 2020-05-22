@@ -7,17 +7,17 @@ package com.example.xc_nonapplication.Vo;
  */
 public class LoginInfoVo {
     /**  用户名*/
-    private String username;
+    private String trainnumber;
 
     /**  密码*/
     private String password;
 
-    public String getUsername() {
-        return username;
+    public String getTrainnumber() {
+        return trainnumber;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setTrainnumber(String trainnumber) {
+        this.trainnumber = trainnumber;
     }
 
     public String getPassword() {

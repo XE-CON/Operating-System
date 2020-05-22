@@ -7,41 +7,32 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.xc_nonapplication.Vo.LoginInfoVo;
-import com.example.xc_nonapplication.request.Body;
-import com.example.xc_nonapplication.request.Head;
-import com.example.xc_nonapplication.request.RequsetInfo;
-import com.example.xc_nonapplication.util.OperateData;
+import com.example.xc_nonapplication.util.EsbUtil;
 import com.example.xc_nonapplication.util.ToastUtil;
-import com.google.gson.Gson;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     private Button mBtnLogin, mBtnForget;
     private CheckBox mCbDisplayPassword;
-    private EditText mEtUsername, mEtPassword;
+    private EditText mEttrainnumber, mEtPassword;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
     private CheckBox mCbRemberPs;
-
-    //服务端地址
-    private static final String URLLOGIN = "http://192.168.1.117:8848/xenco/login";
 
 
     @Override
@@ -49,10 +40,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         //控制登录用户名图标大小
-        mEtUsername = findViewById(R.id.et_username);
-        Drawable drawable = getResources().getDrawable(R.drawable.username);
+        mEttrainnumber = findViewById(R.id.et_trainnumber);
+        Drawable drawable = getResources().getDrawable(R.drawable.trainnumber);
         drawable.setBounds(0, 0, 60, 60);//第一个 0 是距左边距离，第二个 0 是距上边距离，40 分别是长宽
-        mEtUsername.setCompoundDrawables(drawable, null, null, null);//只放左边
+        mEttrainnumber.setCompoundDrawables(drawable, null, null, null);//只放左边
 
         //控制密码图标大小
         mEtPassword = findViewById(R.id.et_password);
@@ -64,79 +55,53 @@ public class LoginActivity extends AppCompatActivity {
         mBtnForget = findViewById(R.id.btn_forgetps);
         mCbDisplayPassword = findViewById(R.id.cb_DisplayPassword);
         mEtPassword = findViewById(R.id.et_password);
-        //账号密码正确时登陆成功跳转页面
         OnClick onClick = new OnClick();
+        //登陆功能
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
-
-//            String[] data = null;
             @Override
             public void onClick(View v) {
                 //获取用户名和密码
-                String username = mEtUsername.getText().toString().trim();
+                String trainnumber = mEttrainnumber.getText().toString().trim();
                 String password = mEtPassword.getText().toString().trim();
-                if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-                    ToastUtil.showMsg(LoginActivity.this, "用户名密码输入不能为空");
+                if (TextUtils.isEmpty(trainnumber) || TextUtils.isEmpty(password)) {
+                    ToastUtil.showMsgTop(LoginActivity.this, "用户名密码输入不能为空");
                 } else {
-//                    if ("abcd".equals(username)) {
-//                        //同后台校验之后密码错误弹出提示.这部分需要调用后台的接口
-//                        ToastUtil.showMsg(LoginActivity.this, "该培训证号不存在");
-//                    } else {
-//                        //通过检验 跳转到主界面
-//                        Intent intent = new Intent(LoginActivity.this, LoginSuccessActivity.class);
-//                        startActivity(intent);
-//                    }
-//                    data = new String[]{username, password};
                     @SuppressLint("HandlerLeak") Handler handler = new Handler() {
                         @Override
                         public void handleMessage(Message msg) {
                             super.handleMessage(msg);
                             switch (msg.what) {
                                 case 0:
-                                    Toast.makeText(LoginActivity.this, "服务器连接失败", Toast.LENGTH_SHORT).show();
+                                    ToastUtil.showMsgTop(LoginActivity.this,"服务器连接失败");
                                     break;
                                 case 1:
-                                    Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                                    ToastUtil.showMsgTop(LoginActivity.this,"登录成功");
                                     startActivity(new Intent(LoginActivity.this, LoginSuccessActivity.class));
                                     LoginActivity.this.finish();
                                     break;
                                 case 2:
-                                    Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                                    ToastUtil.showMsgTop(LoginActivity.this,"登录失败,培训证号或密码输入有误");
                                     break;
                                 case 3:
                                     Log.e("input error", "url为空");
                                     break;
                                 case 4:
-                                    Toast.makeText(LoginActivity.this, "连接超时", Toast.LENGTH_SHORT).show();
+                                    ToastUtil.showMsgTop(LoginActivity.this,"连接超时");
                                     break;
                                 default:
                             }
                         }
                     };
-                    //传后端的方法
-                    OperateData operateData = new OperateData();
-                    //创建一个请求对象 给他装配
-                    RequsetInfo requsetInfo=new RequsetInfo();
-                    LoginInfoVo loginInfoVo=new LoginInfoVo();
-                    Head head=new Head();
-                    head.setService_type("LOGIN");
-                    Body body=new Body();
-                    loginInfoVo.setUsername(username);
+                    LoginInfoVo loginInfoVo = new LoginInfoVo();
+                    loginInfoVo.setTrainnumber(trainnumber);
                     loginInfoVo.setPassword(password);
-                    body.setLogininfo(loginInfoVo);
-                    requsetInfo.setHead(head);
-                    requsetInfo.setBody(body);
-                    String jsonString = new Gson().toJson(requsetInfo);
-                    URL url = null;
-                    try {
-                        url = new URL(URLLOGIN);
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }
-                    operateData.sendData(jsonString, handler, url);
-
+                    //=======================发送请求到服务器====================//
+                    EsbUtil esbUtil = new EsbUtil();
+                    esbUtil.LonginService(loginInfoVo, handler);
                 }
             }
         });
+
         mBtnForget.setOnClickListener(onClick);
         //切换密码显示
         mCbDisplayPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -162,14 +127,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    String username = mEtUsername.getText().toString().trim();
+                    String trainnumber = mEttrainnumber.getText().toString().trim();
                     String password = mEtPassword.getText().toString().trim();
-                    mEditor.putString("username", username);
+                    mEditor.putString("trainnumber", trainnumber);
                     mEditor.putString("password", password);
                     mEditor.putString("ischeck", "true");
                     mEditor.apply();
                 } else {
-                    mEditor.putString("username", "");
+                    mEditor.putString("trainnumber", "");
                     mEditor.putString("password", "");
                     mEditor.putString("ischeck", "false");
                     mEditor.apply();
@@ -178,14 +143,56 @@ public class LoginActivity extends AppCompatActivity {
         });
         //初始化的时候
         if (mSharedPreferences.getString("ischeck", "").equals("true")) {
-            mEtUsername.setText(mSharedPreferences.getString("username", ""));
+            mEttrainnumber.setText(mSharedPreferences.getString("trainnumber", ""));
             mEtPassword.setText(mSharedPreferences.getString("password", ""));
             mCbRemberPs.setChecked(true);
-        }else {
-            mEtUsername.setText("");
+        } else {
+            mEttrainnumber.setText("");
             mEtPassword.setText("");
             mCbRemberPs.setChecked(false);
         }
+
+        //培训证号码输入框监听事件
+        mEttrainnumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String trainnumber = mEttrainnumber.getText().toString().trim();
+                if (trainnumber.length() > 12) {
+                    //到时候换成一个校验
+                    ToastUtil.showMsgTop(LoginActivity.this, "培训证号的长度小于12位,请检查您输入的培训证号");
+                }
+            }
+        });
+
+        mEtPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String password = mEtPassword.getText().toString().trim();
+                if (password.length() > 8 || password.length() < 6) {
+                    ToastUtil.showMsgTop(LoginActivity.this, "输入密码的长度应大于6位小于8位,请检查您输入的账号和密码");
+                }
+            }
+        });
     }
 
 
@@ -196,6 +203,7 @@ public class LoginActivity extends AppCompatActivity {
             switch (v.getId()) {
                 case R.id.btn_forgetps:
                     //跳转找回密码界面
+
                     intent = new Intent(LoginActivity.this, RetrievePasswordActivity.class);
                     break;
             }

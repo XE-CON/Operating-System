@@ -1,6 +1,7 @@
 package com.example.xc_nonapplication.request;
 
 import com.example.xc_nonapplication.Vo.LoginInfoVo;
+import com.example.xc_nonapplication.Vo.PhoneInfoVo;
 
 /**
  * 作者：Royal
@@ -10,6 +11,8 @@ import com.example.xc_nonapplication.Vo.LoginInfoVo;
 public class Body {
 
     private LoginInfoVo logininfo;
+    private PhoneInfoVo phoneInfo;
+
 
     public LoginInfoVo getLogininfo() {
         return logininfo;
@@ -17,5 +20,13 @@ public class Body {
 
     public void setLogininfo(LoginInfoVo logininfo) {
         this.logininfo = logininfo;
+    }
+
+    public PhoneInfoVo getPhoneInfo() {
+        return phoneInfo;
+    }
+
+    public void setPhoneInfo(PhoneInfoVo phoneInfo) {
+        this.phoneInfo = phoneInfo;
     }
 }

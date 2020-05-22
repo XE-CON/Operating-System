@@ -22,6 +22,11 @@ import java.net.URL;
  * 日期: 2020/5/18 14:49
  */
 public class OperateData {
+    public static  final  String TRAIN="TRAIN_NUMBER";
+    public static  final  String LOGIN="LOGIN";
+
+
+
     /**
      *
      * @param stringArray  将string数组转成json格式字符串
@@ -34,7 +39,7 @@ public class OperateData {
         }
         jsonObject = new JSONObject();
         try {
-            jsonObject.put("username",stringArray[0]);
+            jsonObject.put("trainnumber",stringArray[0]);
             jsonObject.put("password",stringArray[1]);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -79,7 +84,7 @@ public class OperateData {
      *  4：连接超时
      *
      */
-    public void sendData(final  String jsonString, final android.os.Handler mh,final URL url) {
+    public void sendData(final  String jsonString, final android.os.Handler mh, final URL url, final String requestType) {
 
         if (url==null){
             mh.sendEmptyMessage(3);
@@ -137,8 +142,17 @@ public class OperateData {
                             Response responseinfo = gson.fromJson(String.valueOf(response), Response.class);
                             System.out.println(responseinfo);
                             int type=1;
-                            if (!"0000".equals(responseinfo.getBody().getResultinfo().getBackStatus())) {
-                                type=0;
+                            //根据返回节点判断的服务类型
+                            if(TRAIN.equals(requestType)) {
+                                if (!"0000".equals(responseinfo.getBody().getTraininfo().getBackStatus())) {
+                                    type = 0;
+                                }
+                            }else if(LOGIN.equals(requestType)) {
+                                if (!"0000".equals(responseinfo.getBody().getResultinfo().getBackStatus())) {
+                                    type = 0;
+                                }
+                            }else {
+
                             }
                             //根据
                             switch (type)

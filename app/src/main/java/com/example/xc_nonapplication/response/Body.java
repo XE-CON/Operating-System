@@ -7,6 +7,15 @@ package com.example.xc_nonapplication.response;
  */
 public class Body {
     private ResponseLogin resultinfo;
+    private ResonseTrainInfo traininfo;
+
+    public ResonseTrainInfo getTraininfo() {
+        return traininfo;
+    }
+
+    public void setTraininfo(ResonseTrainInfo traininfo) {
+        this.traininfo = traininfo;
+    }
 
     public ResponseLogin getResultinfo() {
         return resultinfo;

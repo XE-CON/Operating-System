@@ -24,7 +24,7 @@ public class SetPasswordActivity extends AppCompatActivity {
     private Button mBtnPpevious, mBtnComplete;
     private EditText mEtNewPassword, mEtNewPassword1;
     private CheckBox mCbNewPassword, mCbNewPassword1;
-    private ImageView mIvSign,mIvSign1;
+    private ImageView mIvSign, mIvSign1;
 
 
     @Override
@@ -48,25 +48,29 @@ public class SetPasswordActivity extends AppCompatActivity {
         mEtNewPassword1.setCompoundDrawables(drawable1, null, null, null);//只放左边
         mIvSign = findViewById(R.id.iv_sign);
         mIvSign1 = findViewById(R.id.iv_sign1);
-        //简体输入框事件
+        //输入框监听事件
         mEtNewPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                Drawable drawable = getResources().getDrawable(R.drawable.right);
-//                mIvSign.setBackground(drawable);
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                Drawable drawable = getResources().getDrawable(R.drawable.right);
-//                mIvSign.setBackground(drawable);
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                //checkbox后面显示一个勾
-                Drawable drawable = getResources().getDrawable(R.drawable.right);
-                mIvSign.setBackground(drawable);
+                String newPassword = mEtNewPassword.getText().toString().trim();
+                //新密码的长度要6至8位
+                if (newPassword.length() < 6 || newPassword.length() > 8) {
+                    ToastUtil.showMsgTop(SetPasswordActivity.this, "新密码的长度要6到8位之间");
+                } else {
+                    //checkbox后面显示一个勾
+                    Drawable drawable = getResources().getDrawable(R.drawable.right);
+                    mIvSign.setBackground(drawable);
+                }
             }
         });
 
@@ -76,25 +80,19 @@ public class SetPasswordActivity extends AppCompatActivity {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                if (newPassword.equals(newPassword1)){
-//                    Drawable drawable = getResources().getDrawable(R.drawable.right);
-//                    mIvSign1.setBackground(drawable);
-//                }else {
-//                    Drawable drawable1 = getResources().getDrawable(R.drawable.wrong);
-//                    mIvSign1.setBackground(drawable1);
-//                }
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String newPassword = mEtNewPassword.getText().toString().trim();
-                String newPassword1 =mEtNewPassword1.getText().toString().trim();
-                Log.d("aaa","newPassword"+"   "+"newPassword");
+                String newPassword1 = mEtNewPassword1.getText().toString().trim();
+                Log.d("aaa", "newPassword" + "   " + "newPassword");
                 //校验两次密码的一致性 相同则显示相同相同的勾子
-                if (newPassword.equals(newPassword1)){
+                if (newPassword.equals(newPassword1)) {
                     Drawable drawable = getResources().getDrawable(R.drawable.right);
                     mIvSign1.setBackground(drawable);
-                }else {
+                } else {
                     Drawable drawable1 = getResources().getDrawable(R.drawable.wrong);
                     mIvSign1.setBackground(drawable1);
                 }
@@ -102,13 +100,6 @@ public class SetPasswordActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-//                if (!newPassword.equals(newPassword1)){
-//                    Drawable drawable = getResources().getDrawable(R.drawable.right);
-//                    mIvSign1.setBackground(drawable);
-//                }else {
-//                    Drawable drawable1 = getResources().getDrawable(R.drawable.wrong);
-//                    mIvSign1.setBackground(drawable1);
-//                }
             }
         });
 
@@ -122,12 +113,12 @@ public class SetPasswordActivity extends AppCompatActivity {
                 String newPassword = mEtNewPassword.getText().toString().trim();
                 String newPassword1 = mEtNewPassword1.getText().toString().trim();
                 if (TextUtils.isEmpty(newPassword) || TextUtils.isEmpty(newPassword1)) {
-                    ToastUtil.showMsg(SetPasswordActivity.this, "新密码不能为空");
+                    ToastUtil.showMsgTop(SetPasswordActivity.this, "新密码不能为空");
                 } else {
                     //两次密码输入不一致的的情况
                     if (!newPassword.equals(newPassword1)) {
                         //该手机号未绑定培训证号
-                        ToastUtil.showMsg(SetPasswordActivity.this, "两次输入的密码不一致");
+                        ToastUtil.showMsgTop(SetPasswordActivity.this, "两次输入的密码不一致");
                         return;
                     } else {
                         Intent intent = new Intent(SetPasswordActivity.this, ResetSuccessActivity.class);
