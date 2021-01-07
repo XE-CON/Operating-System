@@ -8,7 +8,7 @@ package com.example.xc_nonapplication.response;
 public class ResponseLogin {
     private String backStatus;
 
-    private String backmessage;
+    private String backMessage;
 
     public String getBackStatus() {
         return backStatus;
@@ -18,11 +18,12 @@ public class ResponseLogin {
         this.backStatus = backStatus;
     }
 
-    public String getBackmessage() {
-        return backmessage;
+
+    public String getBackMessage() {
+        return backMessage;
     }
 
-    public void setBackmessage(String backmessage) {
-        this.backmessage = backmessage;
+    public void setBackMessage(String backMessage) {
+        this.backMessage = backMessage;
     }
 }

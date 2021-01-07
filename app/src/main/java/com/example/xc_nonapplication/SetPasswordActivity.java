@@ -167,7 +167,7 @@ public class SetPasswordActivity extends AppCompatActivity {
             Intent intent = null;
             switch (v.getId()) {
                 case R.id.btn_previous:
-                    //返回上一个界面
+                    //跳转至治疗完成界面
                     intent = new Intent(SetPasswordActivity.this, RetrievePasswordActivity.class);
                     break;
             }

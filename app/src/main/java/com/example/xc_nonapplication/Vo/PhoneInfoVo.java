@@ -8,7 +8,6 @@ package com.example.xc_nonapplication.Vo;
 public class PhoneInfoVo {
     private String phonenumber;
 
-
     public String getPhonenumber() {
         return phonenumber;
     }

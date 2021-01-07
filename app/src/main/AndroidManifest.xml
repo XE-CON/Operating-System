@@ -14,7 +14,13 @@
         <activity android:name=".ResetSuccessActivity"></activity>
         <activity android:name=".SetPasswordActivity" />
         <activity android:name=".RetrievePasswordActivity" />
-        <activity android:name=".LoginSuccessActivity" />
+        <activity android:name=".RegistrationInformationActivity" />
+        <activity android:name=".CompleteTreatmentActivity" />
+        <activity android:name=".DistributionActivity" />
+        <activity android:name=".TreatmentActivity" />
+
+
+
         <activity
             android:name=".LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />

@@ -7,13 +7,14 @@ package com.example.xc_nonapplication.response;
  */
 public class Body {
     private ResponseLogin resultinfo;
-    private ResonseTrainInfo traininfo;
+    private ResponseTrainInfo traininfo;
+    private ResponseMessage messageInfoVo;
 
-    public ResonseTrainInfo getTraininfo() {
+    public ResponseTrainInfo getTraininfo() {
         return traininfo;
     }
 
-    public void setTraininfo(ResonseTrainInfo traininfo) {
+    public void setTraininfo(ResponseTrainInfo traininfo) {
         this.traininfo = traininfo;
     }
 
@@ -23,6 +24,14 @@ public class Body {
 
     public void setResultinfo(ResponseLogin resultinfo) {
         this.resultinfo = resultinfo;
+    }
+
+    public ResponseMessage getMessageInfoVo() {
+        return messageInfoVo;
+    }
+
+    public void setMessageInfoVo(ResponseMessage messageInfoVo) {
+        this.messageInfoVo = messageInfoVo;
     }
 }
 

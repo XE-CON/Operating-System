@@ -1,2 +1,6 @@
+include ':CountdownView-master'
+include ':countdownview'
+include ':CountdownView-master'
+include ':library'
 rootProject.name='Xc-NonApplication'
 include ':app'
